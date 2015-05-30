@@ -1,0 +1,21 @@
+{
+	"manifest_version" : 2,
+	"name": "Quora Top Stories Blocker",
+	"description" : "Blocks top stories on quora, to help you channelize your feed",
+	"version" : "1.0",
+	"background":{
+		"scripts":["background.js","jquery-1.11.3.min.js"]
+	},
+	"browser_action" :{
+		"default_title" : "Stopped all top stories",
+		"default_popup" : "popup.html"
+	},
+	"permissions":[
+		"tabs",
+		"http://*/*",
+		"http://quora.com/*",
+		"http://www.quora.com/*",
+		"https://www.quora.com/*",
+		"https://quora.com/*"
+	]
+}
