@@ -13,16 +13,17 @@
 					"http://quora.com/*",
 					"http://www.quora.com/*"
 					],
-				"js": ["jquery-1.11.3.min.js","content.js"]
+				"js": ["underscore.min.js","content.js","jquery-1.11.3.min.js"]
 			}
 		],
 	"page_action" :{
-		"default_title" : "Stopped all top stories",
-		"default_icon" : "favicon.ico"
+		"default_title" : "No Top Story",
+		"default_icon" : "favicon.ico",
+		"default_popup" : "popup.html"
 	},
 	"permissions":[
-		"activeTab",
 		"tabs",
+		"storage",
 		"http://quora.com/*",
 		"http://www.quora.com/*",
 		"https://www.quora.com/*",

@@ -1,14 +1,10 @@
 var timer;
-var func = function(){$('div[class="pagedlist_item"]:has(div:contains("Top content on Quora"))').hide();};
-
-chrome.runtime.onMessage.addListener(
-		  function(request, sender, sendResponse) {
-			console.log("In content "+request.greeting);
-				if (request.greeting == "start"){
-	      			timer = setInterval(func, 10000);
-				}
-				else{
-					clearTimeout(timer);
-				}
-				sendResponse({greeting:"Done"});
-});
+function fun(){
+	chrome.storage.sync.get("block_stories", function(data){
+		if(data["block_stories"]){
+			$('div[class="pagedlist_item"]:has(div:contains("Top content on Quora"))').hide();
+		}
+	});
+}
+var scrollfun= _.debounce(fun, 50);
+document.addEventListener("scroll", scrollfun);
