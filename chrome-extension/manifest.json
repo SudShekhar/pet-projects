@@ -4,15 +4,25 @@
 	"description" : "Blocks top stories on quora, to help you channelize your feed",
 	"version" : "1.0",
 	"background":{
-		"scripts":["background.js","jquery-1.11.3.min.js"]
+		"scripts":["background.js","jquery-1.11.3.min.js"],
+		"persistent":false
 	},
-	"browser_action" :{
+	"content_scripts": [
+			{
+				"matches": [
+					"http://quora.com/*",
+					"http://www.quora.com/*"
+					],
+				"js": ["jquery-1.11.3.min.js","content.js"]
+			}
+		],
+	"page_action" :{
 		"default_title" : "Stopped all top stories",
-		"default_popup" : "popup.html"
+		"default_icon" : "favicon.ico"
 	},
 	"permissions":[
+		"activeTab",
 		"tabs",
-		"http://*/*",
 		"http://quora.com/*",
 		"http://www.quora.com/*",
 		"https://www.quora.com/*",

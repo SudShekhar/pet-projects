@@ -1,21 +1,29 @@
 var x = true;
-disableTopStories();
-function disableTopStories(){
-   chrome.tabs.executeScript(null, {code: '$(\'div[class="pagedlist_item"]:has(div:contains("Top content on Quora"))\').hide();'})
-	};
+chrome.tabs.query({active: true, currentWindow: true}, function(tabs) {
+	chrome.tabs.sendMessage(tabs[0].id, {greeting: "start"}, function(response) {});
+});
 
-function enableTopStories(){
-   chrome.tabs.executeScript(null, {code: '$(\'div[class="pagedlist_item"]:has(div:contains("Top content on Quora"))\').hide();'})
-};
-
-function updateState(){
+function updateState(tab){
     if(x==false){
         x=true;
-        disableTopStories();
+		chrome.browserAction.setIcon({path:"favicon.ico",tabId:tab.id});
+		chrome.tabs.query({active: true, currentWindow: true}, function(tabs) {
+	  		chrome.tabs.sendMessage(tabs[0].id, {greeting: "start"}, function(response) {});
+		});
+
     }else{
         x=false;
-        enableTopStories();
+		chrome.browserAction.setIcon({path:"stop_favicon.ico",tabId:tab.id});
+		chrome.tabs.query({active: true, currentWindow: true}, function(tabs) {
+	  		chrome.tabs.sendMessage(tabs[0].id, {greeting: "end"}, function(response) {});
+		});
     }
 };
 
 chrome.browserAction.onClicked.addListener(updateState);
+/*chrome.browserAction.onClicked.addListener(function(tab) {
+	    chrome.tabs.query({active: true, currentWindow: true}, function(tabs) {
+	  		chrome.tabs.sendMessage(tabs[0].id, {greeting: "start"}, function(response) {});
+		});
+
+});*/
