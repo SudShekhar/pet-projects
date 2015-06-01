@@ -1,0 +1,27 @@
+<!doctype html>
+<!--
+ This page is shown when the extension button is clicked, because the
+ "browser_action" field in manifest.json contains the "default_popup" key with
+ value "popup.html".
+ -->
+<html>
+  <head>
+  </head>
+  <body>
+  	<div style="width:160px;height:20px;">
+		<form id="story block" action="" method="">
+			<label>
+				<span style="position:relative; top:10px"><b>Highlight abuse</b></span> <br/><br/>
+				<input type="radio" id="stop" name="highlight" value="stop" />Stop <br />
+				<input type="radio" id="capitalize" name="highlight" value="capitalize" />Capitalize <br />
+				<input type="radio" id="hide" name="highlight" value="hide" />Hide <br />
+				<input type="radio" id="alternate" name="highlight" value="alternate" />Cartoonize<br />
+				<input type="radio" id="meaning" name="highlight" value="meaning" />Show Meaning
+			</label>
+		</form>
+	</div>
+	<script src="jquery-1.11.3.min.js"></script>
+	<script src="settings.js"></script>
+ </body>
+</html>
+
