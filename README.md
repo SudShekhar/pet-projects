@@ -17,6 +17,9 @@ Disables top stories on quora and thus, lets you customize your feed exactly the
 
 To disable, click on the icon and deselect the block stories option.
 
+## Highlight that abuse
+A simple chrome application that catches all abuses listed on a page and
+highlights them in different ways.
 
 Resources used:
 
