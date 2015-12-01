@@ -21,6 +21,10 @@ To disable, click on the icon and deselect the block stories option.
 A simple chrome application that catches all abuses listed on a page and
 highlights them in different ways.
 
+## Walmart Price Alert
+A django app made for an internal walmart hackathon. The app is basically a user driven discount-model ecommerce store. You like a product, you 'request' a discount on it. Others who also want a discount do the same. Eventually, the number of people requesting the discount reach a certain mass that the manufacturer/vendor can give a discount.
+Note: the app is in no way production ready and it comes with no warranty.
+
 Resources used:
 
 1) https://developer.chrome.com/extensions/samples
