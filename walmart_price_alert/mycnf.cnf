@@ -1,0 +1,6 @@
+[client]
+database = walmart_price_alert
+host = localhost
+user = root
+password = sud
+default-character-set = utf8

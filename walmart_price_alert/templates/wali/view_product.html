@@ -1,0 +1,209 @@
+{% extends 'base.html' %}
+{% load staticfiles %}
+{% load social_share %}
+{% load tz %}
+
+{% block head_block %}
+	<link  href="/static/homepage/js/datetimepicker/jquery.datetimepicker.css" rel="stylesheet"/>
+{% endblock %}
+{% block body_block %}
+<div class="container-fluid">
+    <div class="content-wrapper">
+		{% if discount %}
+		<div class="jumbotron">
+			This product has been put on discounted rate of ${{discount.discounted_cost}} for a limited period ending {{ discount.end_date| localtime }}<br /><br/>
+            {% if discount.bought_by >= discount.min_customers %}
+                <a href="{% url 'buy_product' product.product_id %}" target="_blank">Click here to buy</a>
+            {% else %}
+			 This discount will be valid if <em>{{discount.customers_needed}}</em> more people buy it.
+            <a href="{% url 'buy_product' product.product_id %}" target="_blank">Click here to buy</a> the product. We will let you know once we reach the minimum mass. You can help by publicizing this offer further (click on campaign below to know more).
+            {% endif %}
+		</div>
+		{% elif add_discount_perm %}
+		<div class="jumbotron">
+		Offer a discount on this product?
+		<button type="button" class="btn btn-info btn-lg" data-toggle="modal" data-target="#myModal">Offer Discount</button>
+	<div class="modal fade" id="myModal" role="dialog">
+    <div class="modal-dialog">	
+		<div class="modal-content">
+					<div class="modal-header">
+					<button type="button" class="close" data-dismiss="modal">&times;</button>
+					<h4 class="modal-title">Offer Discount</h4>
+					</div>
+					<div class="modal-body">
+					<form action="{% url 'add_discount' %}" method="POST"> {% csrf_token %}
+						<input type="hidden" name = "product_id" value="{{product.product_id}}">
+						<div class="form-group">
+						<label class=" control-label" for="discount_price" >Discounted Price</label>
+						<input type="text" name="discount_price" class="form-control input-md" value="{{product.sale_price}}">
+						</div>
+						<div class="form-group">
+						<label class=" control-label" for="start_date"> Start Date </label>
+						<input type="text" class="form-control input-md" id="start_date_picker" name="start_date">
+						</div>
+						<div class="form-group">
+						<label for"end_date" class=" control-label">End Date </label>
+						<input type="text" class="form-control input-md" id="end_date_picker" name="end_date">
+						</div>
+						<div class="form-group">
+						<label for="min_customers" class=" control-label">Minimum Customers Required </label>
+						<input type="text" class="form-control input-md" name="min_customers"/>
+						</div>
+						<input type="submit" class="btn btn-success"  value="Submit">
+					</form>
+					</div>
+					<div class="modal-footer">
+					<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+					</div>
+		</div>
+		</div>
+		</div>
+		</div>
+		{% endif %}
+		<div class="item-container">
+
+			<div class="container">	
+				<div class="col-md-6">
+                    <div class="btn-group wishlist pull-right">
+											<form name="add_to_compare" id="add_to_compare" action="{% url 'wali.views.add_to_compare' %}" method="POST">
+					{% csrf_token %}
+						{% if in_compare == True %}
+							<input type="hidden" name="remove_from_compare" value="{{product.product_id}}">
+							</form>
+							<button type="button" class="btn btn-danger" onClick="myfunc1()">
+							Remove from compare
+						</button>
+						{% else %}
+							<input type="hidden" name="product_id" value="{{product.product_id}}">
+							</form>
+							<button type="button" class="btn btn-success" onClick="myfunc1()">
+								Add to compare
+							</button>
+						{% endif %}
+					</div>
+
+					<div class="product col-md-12 service-image-left">
+                    
+						<center>
+							<img id="item-display" width="100%" src="{{product.large_image_url}}" alt=""></img>
+						</center>
+					</div>
+				
+				</div>
+					
+				<div class="col-md-6">
+					<div class="product-title"><h2>{{product.name}}</h2></div>
+					<hr>
+					<div class="product-rating"><img src="{{product.customer_rating_image}}" alt='customer rating'> {{product.customer_rating}}</div>
+					<div class="pull-right">$ {{product.sale_price}}</div>
+					<hr>
+					<div class="product-stock"> Available?
+						{% if product.available_online %} 
+							Yes
+						{% else %}
+							No
+						{% endif %}
+						<a class="pull-right" style="float:right;" href="{% url 'buy_product' product.product_id %}" target="_blank">
+							<button type="button" style="float:right;" class="btn btn-normal" >Buy Product</button>
+						</a>
+					</div>
+					<hr>
+					<div class="product-desc">{{product.short_description| safe}}</div>
+					<hr>
+						
+					<div class="btn-group wishlist">
+											<form name="add_to_wishlist" id="add_to_wishlist" action="{% url 'wali.views.add_to_wishlist' %}" method="POST">
+					{% csrf_token %}
+						{% if added == True %}
+							<input type="hidden" name="remove_product_id" value="{{product.product_id}}">
+							</form>
+							<button type="button" class="btn btn-danger" onClick="myfunc()">
+							Remove from wishlist
+						</button>
+						{% else %}
+							<input type="hidden" name="product_id" value="{{product.product_id}}">
+							</form>
+							<button type="button" class="btn btn-success" onClick="myfunc()">
+								Add to wishlist
+							</button>
+						{% endif %}
+					</div>
+						Number of people waiting for a discount: {{product.number_of_wishlists}}
+                	</div>
+                </div>
+			</div>
+		</div>
+		<div class="container-fluid">
+			<div class="col-md-12 product-info">
+					<ul class="nav nav-tabs">
+						
+						<li class="active" ><a href="#service-one" data-toggle="tab">DESCRIPTION</a></li>
+						<li><a href="#reviews" data-toggle="tab">REVIEWS</a></li>
+						<li><a href="#service-two" data-toggle="tab">CAMPAIGN</a></li>
+						
+					</ul>
+					<div  class="tab-content">
+							<div class="tab-pane fade in active" id="service-one">
+									{{product.long_description | safe}}
+							</div>
+							<div class="tab-pane fade" id="reviews">
+								{% if reviews %}
+									    <div class="container">
+						<div class="row">
+								{% for review in reviews %}
+										<div class="col-md-6 col-sm-6">
+											<div class="block-text rel zmin">
+												<a title="" href="#">{{review.title}}</a>
+												<div class="mark">My rating:{{review.rating}} </div>
+												<p>{{review.content}}</p>
+												<ins class="ab zmin sprite sprite-i-triangle block"></ins>
+											</div>
+											<div class="person-text rel">
+												<img src=""/>
+												<a title="" href="#">{{review.reviewer}}</a>
+												<i>{{review.review_time}}</i>
+											</div>
+										</div>
+							{% endfor %}
+				</div>
+			</div>
+								{% else %}
+									Sorry, there are no reviews as of now
+								{% endif %}
+							</div>
+
+							<div class="tab-pane fade" id="service-two">
+									Getting impatient waiting for that discount? Why not ask around and see if people you know also need this? Click the below links to share the page. The more people who add the product to their wishlist, the better.
+								<ul>
+									<li> {% post_to_facebook current_url %}
+									<li> {% post_to_gplus current_url %}
+									<li> {% post_to_twitter current_url %}
+								</ul>
+							</div>
+					</div>
+					<hr>
+			</div>
+		</div>
+	</div>
+</div>
+{% endblock %}
+
+
+{% block footer_content %}
+<script src="/static/homepage/js/datetimepicker/jquery.js"></script>
+<script src="/static/homepage/js/datetimepicker/jquery.datetimepicker.js"></script>
+<script>
+$( "#end_date_picker" ).datetimepicker({
+format: 'Y-m-d H:i'
+});
+$("#start_date_picker" ).datetimepicker({
+format: 'Y-m-d H:i'
+});
+function myfunc(){
+    document.add_to_wishlist.submit();
+}
+function myfunc1(){
+    document.add_to_compare.submit();
+}
+</script>
+{% endblock %}

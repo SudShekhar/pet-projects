@@ -1,0 +1,34 @@
+{% extends 'base.html' %}
+{% load staticfiles %}
+
+{% block body_block %}
+<h1> Discounts </h1>
+<table class="table table-bordered table-striped">
+	<thead>
+	<tr>
+	<th> Product Name</th>
+	<th> Start Date </th>
+	<th> End Date </th>
+	<th> Discounted Cost </th>
+	<th> Minimum Customers </th>
+    <th> Bought by </th>
+	<th> Edit </th>
+	<th> Delete </th>
+	</tr>
+	</thead>
+	<tbody>
+	{% for discount in discounts %}
+	<tr>
+		<td> {{ discount.product_id }}</td>
+		<td> {{discount.start_date }}</td>
+		<td> {{discount.end_date }}</td>
+		<td> {{discount.discounted_cost}} </td>
+		<td> {{discount.min_customers}} </td>
+        <td> {{discount.bought_by}} </td>
+		<td> <a href="{% url 'edit_discount' discount.id %}">Edit</a></td>
+		<td> <a href="{% url 'delete_discount' discount.id %}">Delete</a> </td>
+	</tr>
+	{% endfor %}
+	</tbody>
+</table>
+{% endblock %}

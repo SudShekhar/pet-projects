@@ -1,0 +1,47 @@
+{% extends 'base.html' %}
+{% load staticfiles %}
+{% block head_block %}
+	<link  href="/static/homepage/js/datetimepicker/jquery.datetimepicker.css" rel="stylesheet"/>
+{% endblock %}
+{% block body_block %}
+<div class="col-md-7 col-md-offset-3">
+<form role="form"  method="post" action="{{request.path}}">
+  			{% csrf_token %}
+        <h2 class="form-signin-heading">Edit Discount</h2>
+		<input type="hidden" value="{{discount.product_id}}" name="product_id">
+        <div class="form-group" >
+         <p class="required"> <label for="id_start_date">Start Date:</label>
+		 <input class="form-control"  id="id_start_date" maxlength="30" name="start_date" type="text"  placeholder="Enter Starting Date" value="{{discount.start_date|date:"Y-m-d"}} {{discount.start_date|time:"H:i"}}"/></p>
+        </div>
+         <div class="form-group">
+            <p class="required"><label for="id_end_date">End Date:</label>
+			<input class="form-control" id="id_end_date" name="end_date" type="text" placeholder="Enter End Date"  value="{{discount.end_date|date:"Y-m-d"}} {{discount.end_date|time:"H:i"}}"/></p>
+         </div>
+        <div class="form-group">
+            <p class="required"><label for="id_discounted_cost">Discounted Cost:</label>
+                <input class="form-control" id="id_discounted_cost" name="discounted_cost" type="text" value="{{discount.discounted_cost}}" placeholder="Enter Discounted Cost" /></p>
+        </div>
+        <div class="form-group">
+            <p class="required"><label for="id_min_customers">Minimum Customers Required</label>
+         <input class="form-control" id="id_min_customers" name="min_customers" type="text" value="{{discount.min_customers}}" placeholder="Enter Minimum Customers For Deal" /></p>
+        </div>
+
+        <button type="submit" class="btn btn-default">Submit</button>
+
+		</form>
+		
+	</div>
+{% endblock %}
+
+{% block footer_content %}
+<script src="/static/homepage/js/datetimepicker/jquery.js"></script>
+<script src="/static/homepage/js/datetimepicker/jquery.datetimepicker.js"></script>
+<script>
+$( "#id_end_date" ).datetimepicker({
+format: 'Y-m-d H:i'
+});
+$( "#id_start_date" ).datetimepicker({
+format: 'Y-m-d H:i'
+});
+</script>
+{% endblock %}

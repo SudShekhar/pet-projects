@@ -1,0 +1,68 @@
+{% extends 'base.html' %}
+{% load staticfiles %}
+{% load tz %}
+
+{% block body_block %}
+<div class="page-header">
+<h1> Compare products </h1>
+    {% if products %}
+        </div>
+                <div class="row">
+					{% for product in products %}
+
+                    <div class="col-sm-4 col-lg-4 col-md-4">
+                        <div class="thumbnail">
+                            <form name="add_to_compare{{product.product_id}}" id="{{product.product_id}}" action="{% url 'add_to_compare' %}?return_url={% url 'view_compare' %}"  method="POST">{% csrf_token %}
+                            <input type="hidden" name="remove_from_compare" value="{{product.product_id}}">
+                        </form>
+                            <button type="button" class="btn btn-danger pull-right" aria-label="Right Align" onClick="myfunc('{{product.product_id}}')">
+                                <span class="glyphicon glyphicon-remove" aria-hidden="true"></span>
+                            </button> 
+                            <img src="{{product.medium_image_url}}" alt="">
+                                <div class="product-title">
+                                    <h4><a href="{% url 'view_product'%}?product_id={{product.product_id}}">{{product.name}}</a>
+                                    </h4>
+                                </div>
+                                <div class="pull-right">$ {{product.sale_price}}</div>
+                                <hr>
+                                <div class="product-stock"> Available?
+                                    {% if product.available_online %} 
+                                        Yes
+                                    {% else %}
+                                        No
+                                    {% endif %}
+                                    <a class="pull-right" style="float:right;" href="{% url 'buy_product' product.product_id %}" target="_blank">
+                                        <button type="button" style="float:right;" class="btn btn-normal" >Buy Product</button>
+                                    </a>
+                                </div>
+                                <hr>
+                                <div class="product-desc">{{product.short_description| safe}}</div>
+                                <hr>
+                                <div class="ratings">
+                                    <p class="pull-right">
+                                        <img src="{{product.customer_rating_image}}" alt="{{product.customer_rating}}">
+                                    </p>
+                                    <h4>{{product.customer_rating}}</h4>
+                                 </div>
+
+                        </div>
+                     </div>
+					{% endfor %}
+                </div>
+    {% else %}
+    <small>You haven't added any items to compare yet. Use the search feature to add them</small>
+    </div>
+    {% endif %}
+
+{% endblock %}
+
+
+{% block footer_content %}
+<script src="/static/homepage/js/datetimepicker/jquery.js"></script>
+<script src="/static/homepage/js/datetimepicker/jquery.datetimepicker.js"></script>
+<script>
+function myfunc(x){
+    document.getElementById(x).submit();
+};
+</script>
+{% endblock %}
